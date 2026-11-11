@@ -1,27 +1,30 @@
 package es.academia.campushub.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name="estudiante")
-@Data
+@Table(name = "estudiante",
+        uniqueConstraints = @UniqueConstraint(name = "uk_estudiante_correo", columnNames = "correo_estudiante"),
+        indexes = @Index(name = "idx_estudiante_grupo", columnList = "grupo_id"))
+@Getter
+@Setter
 public class EstudianteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEstudiante;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String nombreEstudiante;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String apellidoEstudiante;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = false, length = 150)
     private String correoEstudiante;
 
     @Column(nullable = false,

@@ -1,12 +1,14 @@
 package es.academia.campushub.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "departamento",
         uniqueConstraints = @UniqueConstraint(name = "uk_departamento_nombre", columnNames = "nombre_departamento"))
-@Data
+@Getter
+@Setter
 public class DepartamentoEntity {
 
     @Id

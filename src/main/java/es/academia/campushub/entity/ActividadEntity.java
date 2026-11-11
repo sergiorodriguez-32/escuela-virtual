@@ -1,27 +1,29 @@
 package es.academia.campushub.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name="actividad")
-@Data
+@Table(name = "actividad",
+        indexes = @Index(name = "idx_actividad_docente", columnList = "docente_responsable_id"))
+@Getter
+@Setter
 public class ActividadEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idActividad;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String titulo;
 
-    @Column(nullable = false,columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private TipoActividad tipoActividad;
 
@@ -38,5 +40,4 @@ public class ActividadEntity {
     @JoinColumn(name = "docente_responsable_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_actividad_docente"))
     private DocenteEntity docenteResponsable;
-
 }

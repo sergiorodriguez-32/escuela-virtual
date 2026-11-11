@@ -1,7 +1,8 @@
 package es.academia.campushub.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -9,8 +10,10 @@ import java.time.LocalDateTime;
 @Table(name = "inscripcion",
         uniqueConstraints = @UniqueConstraint(
                 name = "uk_inscripcion_actividad_estudiante",
-                columnNames = {"actividad_id", "estudiante_id"}))
-@Data
+                columnNames = {"actividad_id", "estudiante_id"}),
+        indexes = @Index(name = "idx_inscripcion_estudiante", columnList = "estudiante_id"))
+@Getter
+@Setter
 public class InscripcionEntity {
 
     @Id
