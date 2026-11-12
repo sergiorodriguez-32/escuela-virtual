@@ -1,6 +1,7 @@
 package es.academia.campushub.service;
 
 import es.academia.campushub.controller.dto.*;
+import es.academia.campushub.document.SeguimientoDocument;
 import es.academia.campushub.entity.*;
 import es.academia.campushub.mapper.EntityMapper;
 import es.academia.campushub.mapper.SeguimientoMapper;
@@ -9,10 +10,15 @@ import es.academia.campushub.util.exception.BusinessConflictException;
 import es.academia.campushub.util.exception.InvalidInputException;
 import es.academia.campushub.util.exception.PersistenciaPendienteException;
 import es.academia.campushub.util.exception.ResourceNotFoundException;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -178,12 +184,47 @@ public class CampusHubServiceImpl implements CampusHubService {
   @Override
   public SeguimientoResponse registrarSeguimiento(
       Long actividadId, CreateSeguimientoRequest request) {
-    throw new PersistenciaPendienteException("registrarSeguimiento");
+        requireBody(request);
+        String tipo = text(request.tipo(), "tipo", 50 );
+        if (!actividades.existsById(actividadId)){
+            throw new ResourceNotFoundException("Actividad no encontrada");
+    }
+      SeguimientoDocument doc = new SeguimientoDocument();
+        doc.setActividadId(actividadId);
+        doc.setTipo(tipo);
+        doc.setCreadoEn(Instant.now()); //fecha puesta pr el servirdor
+        doc.setDatos(request.datos() == null ? new HashMap<>() : new HashMap<>(request.datos()));
+        return seguimientoMapper.toResponse(seguimientos.save(doc));
   }
 
   @Override
+  @Transactional (readOnly = true)
   public ActividadDetalleResponse detalle(Long id) {
-    throw new PersistenciaPendienteException("detalle");
+        ActividadEntity actividad = actividad(id);
+
+        List<EstudianteResponse> inscritos =
+                inscripciones.findParticipantes(id).stream()
+                        .map (i -> mapper.toResponse(i.getEstudiante()))
+                        .toList();
+                int ocupadas = inscritos.size();
+                int disponibles = Math.max(0, actividad.getNumeroMaximoParticipantes() - ocupadas);
+
+                List <SeguimientoResponse> listaSeguimientos;
+                try {
+                    listaSeguimientos =
+                            seguimientoMapper.toResponseList(seguimientos.findByActividadIdOrderByCreadoEnDesc(id));
+                } catch (DataAccessException ex) {
+                    listaSeguimientos = List.of();
+                }
+    return new ActividadDetalleResponse(
+            mapper.toResponse(actividad),
+            mapper.toResponse(actividad.getDocenteResponsable()),
+            ocupadas,
+            disponibles,
+            inscritos,
+            List.of(),
+            listaSeguimientos);
+
   }
 
   @Override
