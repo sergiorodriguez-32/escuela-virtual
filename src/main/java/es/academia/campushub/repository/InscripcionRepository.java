@@ -17,4 +17,10 @@ public interface InscripcionRepository extends JpaRepository<InscripcionEntity, 
       "select i from InscripcionEntity i join fetch i.estudiante e join fetch e.grupoEstudiante "
           + "where i.actividad.idActividad = :actividadId order by i.fechaInscripcion, i.idInscripcion")
   List<InscripcionEntity> findParticipantes(@Param("actividadId") Long actividadId);
+
+  //Historial estudiante
+  @Query(
+          "select i from InscripcionEntity i join fetch i.estudiante e join fetch e.grupoEstudiante "
+                  + "where i.estudiante.idEstudiante = :estudianteId order by i.fechaInscripcion desc")
+    List<InscripcionEntity> findHistorial (@Param("estudianteId") Long estudianteId);
 }
