@@ -3,6 +3,7 @@ package es.academia.campushub.service;
 import es.academia.campushub.controller.dto.*;
 import es.academia.campushub.entity.*;
 import es.academia.campushub.mapper.EntityMapper;
+import es.academia.campushub.mapper.SeguimientoMapper;
 import es.academia.campushub.repository.*;
 import es.academia.campushub.util.exception.BusinessConflictException;
 import es.academia.campushub.util.exception.InvalidInputException;
@@ -24,29 +25,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CampusHubServiceImpl implements CampusHubService {
 
-  private final GrupoRepository grupos;
-  private final DepartamentoRepository departamentos;
-  private final DocenteRepository docentes;
-  private final EstudianteRepository estudiantes;
-  private final ActividadRepository actividades;
-  private final InscripcionRepository inscripciones;
-  private final EntityMapper mapper;
+    private final GrupoRepository grupos;
+    private final DepartamentoRepository departamentos;
+    private final DocenteRepository docentes;
+    private final EstudianteRepository estudiantes;
+    private final ActividadRepository actividades;
+    private final InscripcionRepository inscripciones;
+    private final EntityMapper mapper;
+    private final SeguimientoRepository seguimientos;
+    private final SeguimientoMapper seguimientoMapper;
 
-  public CampusHubServiceImpl(
-      GrupoRepository grupos,
-      DepartamentoRepository departamentos,
-      DocenteRepository docentes,
-      EstudianteRepository estudiantes,
-      ActividadRepository actividades,
-      InscripcionRepository inscripciones,
-      EntityMapper mapper) {
-    this.grupos = grupos;
-    this.departamentos = departamentos;
-    this.docentes = docentes;
-    this.estudiantes = estudiantes;
-    this.actividades = actividades;
-    this.inscripciones = inscripciones;
-    this.mapper = mapper;
+
+    public CampusHubServiceImpl(
+            GrupoRepository grupos,
+            DepartamentoRepository departamentos,
+            DocenteRepository docentes,
+            EstudianteRepository estudiantes,
+            ActividadRepository actividades,
+            InscripcionRepository inscripciones,
+            EntityMapper mapper,
+            SeguimientoRepository seguimientos,
+            SeguimientoMapper seguimientoMapper) {
+        this.grupos = grupos;
+        this.departamentos = departamentos;
+        this.docentes = docentes;
+        this.estudiantes = estudiantes;
+        this.actividades = actividades;
+        this.inscripciones = inscripciones;
+        this.mapper = mapper;
+        this.seguimientos = seguimientos;
+        this.seguimientoMapper = seguimientoMapper;
   }
 
   // ---------- RF01 / RF02 / RF03 ----------
