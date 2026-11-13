@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "actividad",
@@ -40,4 +42,12 @@ public class ActividadEntity {
     @JoinColumn(name = "docente_responsable_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_actividad_docente"))
     private DocenteEntity docenteResponsable;
+
+    @ManyToMany
+    @JoinTable(name = "actividad_etiqueta",
+            joinColumns = @JoinColumn(name = "actividad_id",
+                    foreignKey = @ForeignKey(name = "fk_actividad_etiqueta_actividad")),
+            inverseJoinColumns = @JoinColumn(name = "etiqueta_id",
+                    foreignKey = @ForeignKey(name = "fk_actividad_etiqueta_etiqueta")))
+    private Set<EtiquetaEntity> etiquetas = new HashSet<>();
 }
