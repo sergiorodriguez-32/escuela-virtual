@@ -242,8 +242,28 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   @Override
-  public ContactoResponse guardarContacto(Long estudianteId, UpsertContactoRequest request) {
-    throw new PersistenciaPendienteException("guardarContacto");
+  public ContactoResponse guardarContacto(Long estudianteId, UpsertContactoRequest r) {
+    requireBody(r);
+    EstudianteEntity estudiante = estudiante(estudianteId);
+    String tutor = text(r.tutorLegal(), "tutorLegal", 150);
+    String telefono = text(r.telefono(), "telefono", 20);
+    String correo = email(r.email());
+    if (r.autorizado() == null) throw new InvalidInputException("autorizado es obligatorio");
+    LocalDate fecha =
+            r.fechaAutorizacion() == null || r.fechaAutorizacion().isBlank()
+                    ? null
+                    : date(r.fechaAutorizacion(), "fechaAutorizacion");
+    if (r.autorizado() && fecha == null)
+      throw new InvalidInputException("fechaAutorizacion es obligatoria si autorizado es true");
+
+    ContactoEntity c = contactos.findById(estudianteId).orElseGet(ContactoEntity::new);
+    c.setEstudiante(estudiante);
+    c.setTutorLegal(tutor);
+    c.setTelefono(telefono);
+    c.setCorreo(correo);
+    c.setAutorizado(r.autorizado());
+    c.setFechaAutorizacion(fecha);
+    return mapper.toResponse(contactos.saveAndFlush(c));
   }
 
   @Override
