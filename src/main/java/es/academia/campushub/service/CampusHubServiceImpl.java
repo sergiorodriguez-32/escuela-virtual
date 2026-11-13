@@ -267,8 +267,13 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public ContactoResponse contacto(Long estudianteId) {
-    throw new PersistenciaPendienteException("contacto");
+    estudiante(estudianteId);
+    return contactos
+            .findById(estudianteId)
+            .map(mapper::toResponse)
+            .orElseThrow(() -> new ResourceNotFoundException("El estudiante no tiene ficha de contacto"));
   }
 
   @Override
