@@ -271,8 +271,11 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ActividadResponse> actividadesPorEtiqueta(Long etiquetaId) {
-    throw new PersistenciaPendienteException("actividadesPorEtiqueta");
+    if (!etiquetas.existsById(etiquetaId))
+      throw new ResourceNotFoundException("Etiqueta no encontrada");
+    return actividades.findByEtiqueta(etiquetaId).stream().map(mapper::toResponse).toList();
   }
 
   // ---------- Utilidades ----------
