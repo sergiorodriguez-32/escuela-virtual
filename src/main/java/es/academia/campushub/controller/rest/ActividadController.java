@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/** Endpoints REST de actividades, inscripciones y seguimiento. */
 @RestController
 public class ActividadController {
   private final CampusHubService service;

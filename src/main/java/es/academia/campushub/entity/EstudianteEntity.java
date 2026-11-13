@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/** Estudiante matriculado en un grupo. */
 @Entity
 @Table(name = "estudiante",
         uniqueConstraints = @UniqueConstraint(name = "uk_estudiante_correo", columnNames = "correo_estudiante"),

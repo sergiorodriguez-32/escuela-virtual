@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/** Actividad con fecha y aforo máximo, a cargo de un docente. */
 @Entity
 @Table(name = "actividad",
         indexes = @Index(name = "idx_actividad_docente", columnList = "docente_responsable_id"))

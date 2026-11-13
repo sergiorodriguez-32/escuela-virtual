@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/** Endpoints REST de estudiantes y su contacto. */
 @RestController
 public class EstudianteController {
   private final CampusHubService uc;

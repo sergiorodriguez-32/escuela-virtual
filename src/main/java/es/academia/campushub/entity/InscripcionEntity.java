@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/** Inscripción de un estudiante en una actividad. */
 @Entity
 @Table(name = "inscripcion",
         uniqueConstraints = @UniqueConstraint(

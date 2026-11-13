@@ -13,7 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/** Las reglas de integridad siguen siendo responsabilidad del alumno. */
+/** Traduce las excepciones a respuestas HTTP (400/404/409). */
 @RestControllerAdvice
 public class ApiExceptionHandler {
   @ExceptionHandler(PersistenciaPendienteException.class)

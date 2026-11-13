@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/** Convierte documentos de Mongo en DTO de respuesta. */
 @Component
 public class SeguimientoMapper {
 

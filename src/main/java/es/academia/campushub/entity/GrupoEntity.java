@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Grupo de estudiantes con un docente como tutor. */
 @Entity
 @Table(name = "grupo",
         indexes = @Index(name = "idx_grupo_tutor", columnList = "tutor_id"))

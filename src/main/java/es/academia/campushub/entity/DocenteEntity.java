@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Docente adscrito a un departamento. */
 @Entity
 @Table(name = "docente",
         uniqueConstraints = @UniqueConstraint(name = "uk_docente_correo", columnNames = "correo_docente"),

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/** Seguimiento de una actividad guardado en MongoDB. */
 @Document(collection = "seguimientos")
 @Data
 @NoArgsConstructor

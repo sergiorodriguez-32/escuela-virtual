@@ -10,6 +10,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import java.time.Duration;
 
 
+/** Configuración de la caché Redis. */
 @Configuration // Indica q es configuracion
 @EnableCaching //Indica q el sistema tiene Cache
 public class CacheConfig  {
