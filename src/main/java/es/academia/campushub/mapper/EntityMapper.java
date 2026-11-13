@@ -65,6 +65,10 @@ public class EntityMapper {
                 e.getFechaAutorizacion() == null ? null : e.getFechaAutorizacion().toString());
     }
 
+    public EtiquetaResponse toResponse(EtiquetaEntity e) {
+        return new EtiquetaResponse(e.getIdEtiqueta(), e.getNombre());
+    }
+
     //Historial
     public ActividadHistorialResponse toHistorialResponse(InscripcionEntity i) {
         ActividadEntity a = i.getActividad();
