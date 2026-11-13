@@ -261,7 +261,13 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   @Override
   public void asociarEtiqueta(Long actividadId, Long etiquetaId) {
-    throw new PersistenciaPendienteException("asociarEtiqueta");
+    ActividadEntity a = actividad(actividadId);
+    EtiquetaEntity e =
+            etiquetas
+                    .findById(etiquetaId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Etiqueta no encontrada"));
+    a.getEtiquetas().add(e);
+    actividades.saveAndFlush(a);
   }
 
   @Override
