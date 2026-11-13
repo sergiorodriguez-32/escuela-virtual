@@ -229,7 +229,10 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   @Override
   public List<ActividadHistorialResponse> historial(Long estudianteId) {
-    throw new PersistenciaPendienteException("historial");
+    estudiante(estudianteId);
+    return inscripciones.findHistorial(estudianteId).stream()
+            .map(mapper::toHistorialResponse)
+            .toList();
   }
 
   @Override
