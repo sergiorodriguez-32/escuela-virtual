@@ -41,6 +41,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     private final SeguimientoRepository seguimientos;
     private final SeguimientoMapper seguimientoMapper;
     private final EtiquetaRepository etiquetas;
+    private final ContactoRepository contactos;
 
 
     public CampusHubServiceImpl(
@@ -53,7 +54,8 @@ public class CampusHubServiceImpl implements CampusHubService {
             EntityMapper mapper,
             SeguimientoRepository seguimientos,
             SeguimientoMapper seguimientoMapper,
-            EtiquetaRepository etiquetas) {
+            EtiquetaRepository etiquetas,
+            ContactoRepository contactos) {
         this.grupos = grupos;
         this.departamentos = departamentos;
         this.docentes = docentes;
@@ -64,6 +66,7 @@ public class CampusHubServiceImpl implements CampusHubService {
         this.seguimientos = seguimientos;
         this.seguimientoMapper = seguimientoMapper;
         this.etiquetas = etiquetas;
+        this.contactos = contactos;
   }
 
   // ---------- RF01 / RF02 / RF03 ----------
