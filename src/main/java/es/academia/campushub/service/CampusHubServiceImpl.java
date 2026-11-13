@@ -18,6 +18,8 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,7 +147,7 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   // ---------- RF04 ----------
-
+  @CacheEvict(value = "detalleActividad", key = "#actividadId")
   @Override
   public InscripcionResponse inscribir(Long actividadId, CreateInscripcionRequest r) {
     requireBody(r);
@@ -181,6 +183,7 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   // ---------- Pendiente de otros miembros del equipo ----------
 
+  @CacheEvict(value = "detalleActividad", key ="#actividadId")
   @Override
   public SeguimientoResponse registrarSeguimiento(
       Long actividadId, CreateSeguimientoRequest request) {
@@ -197,6 +200,7 @@ public class CampusHubServiceImpl implements CampusHubService {
         return seguimientoMapper.toResponse(seguimientos.save(doc));
   }
 
+  @Cacheable(value = "detalleActividad",key = "#id")
   @Override
   @Transactional (readOnly = true)
   public ActividadDetalleResponse detalle(Long id) {

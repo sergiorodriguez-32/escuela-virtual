@@ -29,5 +29,6 @@ public class SeguimientoMapper {
 
         return docs.stream().map(this::toResponse).toList();  // recorremos cada documento, lo convertimos a SeguimientoResponse con toResponse y lo metemos en una lista nueva
 
+
     }
 }

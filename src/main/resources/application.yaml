@@ -17,3 +17,7 @@ spring:
       port: ${REDIS_PORT:6379}
 server:
   port: ${PORT:8080}
+logging:
+  level:
+    org.springframework.cache: TRACE   # muestra si la clave se encuentra o no en cache
+    org.hibernate.SQL: DEBUG           # si sale SQL, se ha ido a PostgreSQL; si no, vino de Redis
