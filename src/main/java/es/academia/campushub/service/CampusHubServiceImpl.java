@@ -40,6 +40,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     private final EntityMapper mapper;
     private final SeguimientoRepository seguimientos;
     private final SeguimientoMapper seguimientoMapper;
+    private final EtiquetaRepository etiquetas;
 
 
     public CampusHubServiceImpl(
@@ -51,7 +52,8 @@ public class CampusHubServiceImpl implements CampusHubService {
             InscripcionRepository inscripciones,
             EntityMapper mapper,
             SeguimientoRepository seguimientos,
-            SeguimientoMapper seguimientoMapper) {
+            SeguimientoMapper seguimientoMapper,
+            EtiquetaRepository etiquetas) {
         this.grupos = grupos;
         this.departamentos = departamentos;
         this.docentes = docentes;
@@ -61,6 +63,7 @@ public class CampusHubServiceImpl implements CampusHubService {
         this.mapper = mapper;
         this.seguimientos = seguimientos;
         this.seguimientoMapper = seguimientoMapper;
+        this.etiquetas = etiquetas;
   }
 
   // ---------- RF01 / RF02 / RF03 ----------
@@ -246,8 +249,14 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   @Override
-  public EtiquetaResponse crearEtiqueta(CreateEtiquetaRequest request) {
-    throw new PersistenciaPendienteException("crearEtiqueta");
+  public EtiquetaResponse crearEtiqueta(CreateEtiquetaRequest r) {
+    requireBody(r);
+    String nombre = text(r.nombre(), "nombre", 50).toLowerCase();
+    if (etiquetas.existsByNombre(nombre))
+      throw new BusinessConflictException("Ya existe una etiqueta con ese nombre");
+    EtiquetaEntity e = new EtiquetaEntity();
+    e.setNombre(nombre);
+    return mapper.toResponse(etiquetas.saveAndFlush(e));
   }
 
   @Override
