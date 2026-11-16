@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+// Acceso a datos de actividades.
 public interface ActividadRepository extends JpaRepository<ActividadEntity, Long> {
 
   /** Bloquea la fila de la actividad (SELECT ... FOR UPDATE) para serializar las inscripciones. */

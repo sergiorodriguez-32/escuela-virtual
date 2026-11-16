@@ -1,4 +1,18 @@
-# CampusHub — proyecto inicial para alumnos de 2.º DAM
+# CampusHub — proyecto de Acceso a Datos (2.º DAM)
+
+API REST para gestionar la actividad de un centro educativo: grupos, docentes, estudiantes,
+actividades e inscripciones. Combina PostgreSQL (datos relacionales), MongoDB (seguimientos) y
+Redis (caché).
+
+## Autores
+
+Proyecto realizado por:
+
+- Cristina Moran
+- Samuel Cleto
+- Sergio Rodriguez
+
+## Enunciado original
 
 **IMPORTANTE:** Este repositorio es intencionadamente incompleto. La API tiene controllers REST y DTO,
 pero la persistencia no existe todavía. Cada operación del servicio devuelve **501 NOT_IMPLEMENTED**.

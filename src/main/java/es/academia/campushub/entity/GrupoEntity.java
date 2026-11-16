@@ -14,16 +14,16 @@ public class GrupoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idGrupo;
+    private Long idGrupo; // clave primaria autogenerada
 
     @Column(nullable = false, length = 100)
-    private String nombreGrupo;
+    private String nombreGrupo; // nombre del grupo
 
     @Column(nullable = false, length = 50)
-    private String nivelGrupo;
+    private String nivelGrupo; // nivel del grupo
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tutor_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_grupo_tutor"))
-    private DocenteEntity tutor;
+    private DocenteEntity tutor; // docente tutor
 }

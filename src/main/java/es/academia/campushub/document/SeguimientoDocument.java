@@ -16,14 +16,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class SeguimientoDocument {
 
     @Id
-    private String id;
+    private String id; // id generado por Mongo
 
     @Indexed(name = "idx_seguimiento_actividad") //Indice por actividadID
     private Long actividadId;
 
-    private String tipo;
+    private String tipo; // tipo de seguimiento
 
-    private Instant creadoEn;
+    private Instant creadoEn; // fecha de creación
 
-    private Map<String, Object> datos = new HashMap<>();
+    private Map<String, Object> datos = new HashMap<>(); // datos libres del seguimiento
 }

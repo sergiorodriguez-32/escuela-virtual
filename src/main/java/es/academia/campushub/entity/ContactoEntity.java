@@ -17,25 +17,25 @@ public class ContactoEntity {
 
     @Id
     @Column(name = "estudiante_id")
-    private Long idEstudiante;
+    private Long idEstudiante; // misma clave que el estudiante
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId
     @JoinColumn(name = "estudiante_id", foreignKey = @ForeignKey(name = "fk_contacto_estudiante"))
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private EstudianteEntity estudiante;
+    private EstudianteEntity estudiante; // estudiante dueño del contacto (si se borra, se borra el contacto)
 
     @Column(nullable = false, length = 150)
-    private String tutorLegal;
+    private String tutorLegal; // nombre del tutor legal
 
     @Column(nullable = false, length = 20)
-    private String telefono;
+    private String telefono; // teléfono de contacto
 
     @Column(nullable = false, length = 150)
-    private String correo;
+    private String correo; // correo de contacto
 
     @Column(nullable = false)
-    private Boolean autorizado;
+    private Boolean autorizado; // si hay autorización
 
-    private LocalDate fechaAutorizacion;
+    private LocalDate fechaAutorizacion; // fecha de la autorización (opcional)
 }

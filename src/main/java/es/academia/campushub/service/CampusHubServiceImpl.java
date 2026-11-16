@@ -44,6 +44,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     private final SeguimientoMapper seguimientoMapper;
 
 
+    // Inyección de repositorios y mappers por constructor
     public CampusHubServiceImpl(
             GrupoRepository grupos,
             DepartamentoRepository departamentos,
@@ -67,6 +68,7 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   // ---------- RF01 / RF02 / RF03 ----------
 
+  // Valida los datos y guarda el grupo
   @Override
   public GrupoResponse crearGrupo(CreateGrupoRequest r) {
     requireBody(r);
@@ -77,6 +79,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(grupos.saveAndFlush(g));
   }
 
+  // Valida el nombre y guarda el departamento
   @Override
   public DepartamentoResponse crearDepartamento(CreateDepartamentoRequest r) {
     requireBody(r);
@@ -85,6 +88,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(departamentos.saveAndFlush(d));
   }
 
+  // Valida los datos, busca el departamento y guarda el docente
   @Override
   public DocenteResponse crearDocente(CreateDocenteRequest r) {
     requireBody(r);
@@ -100,6 +104,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(docentes.saveAndFlush(d));
   }
 
+  // Valida los datos (correo, fecha, grupo) y guarda el estudiante
   @Override
   public EstudianteResponse crearEstudiante(CreateEstudianteRequest r) {
     requireBody(r);
@@ -119,12 +124,14 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(estudiantes.saveAndFlush(e));
   }
 
+  // Devuelve el estudiante o lanza 404
   @Override
   @Transactional(readOnly = true)
   public EstudianteResponse obtenerEstudiante(Long id) {
     return mapper.toResponse(estudiante(id));
   }
 
+  // Valida los datos (tipo, fecha, aforo, docente) y guarda la actividad
   @Override
   public ActividadResponse crearActividad(CreateActividadRequest r) {
     requireBody(r);
@@ -140,6 +147,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(actividades.saveAndFlush(a));
   }
 
+  // Devuelve la actividad o lanza 404
   @Override
   @Transactional(readOnly = true)
   public ActividadResponse obtenerActividad(Long id) {
@@ -147,6 +155,7 @@ public class CampusHubServiceImpl implements CampusHubService {
   }
 
   // ---------- RF04 ----------
+  // Bloquea la actividad, comprueba duplicado y aforo, y guarda la inscripción
   @CacheEvict(value = "detalleActividad", key = "#actividadId")
   @Override
   public InscripcionResponse inscribir(Long actividadId, CreateInscripcionRequest r) {
@@ -172,6 +181,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     return mapper.toResponse(inscripciones.saveAndFlush(i));
   }
 
+  // Devuelve los estudiantes inscritos en la actividad
   @Override
   @Transactional(readOnly = true)
   public List<EstudianteResponse> participantes(Long actividadId) {
@@ -183,6 +193,7 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   // ---------- Pendiente de otros miembros del equipo ----------
 
+  // Guarda el seguimiento en Mongo (y borra la caché del detalle)
   @CacheEvict(value = "detalleActividad", key ="#actividadId")
   @Override
   public SeguimientoResponse registrarSeguimiento(
@@ -200,6 +211,7 @@ public class CampusHubServiceImpl implements CampusHubService {
         return seguimientoMapper.toResponse(seguimientos.save(doc));
   }
 
+  // Monta el detalle (en caché): plazas ocupadas/libres, inscritos y seguimientos; si Mongo falla, seguimientos vacíos
   @Cacheable(value = "detalleActividad",key = "#id")
   @Override
   @Transactional (readOnly = true)
@@ -231,6 +243,7 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   }
 
+  // Actividades del estudiante, de la más reciente a la más antigua
   @Override
   public List<ActividadHistorialResponse> historial(Long estudianteId) {
     estudiante(estudianteId);
@@ -239,6 +252,7 @@ public class CampusHubServiceImpl implements CampusHubService {
             .toList();
   }
 
+  // Aún sin implementar
   @Override
   public ContactoResponse guardarContacto(Long estudianteId, UpsertContactoRequest request) {
     throw new PersistenciaPendienteException("guardarContacto");
@@ -266,6 +280,7 @@ public class CampusHubServiceImpl implements CampusHubService {
 
   // ---------- Utilidades ----------
 
+  // Busca un docente o lanza error si falta o no existe
   private DocenteEntity docente(Long id) {
     if (id == null) throw new InvalidInputException("El docente es obligatorio");
     return docentes
@@ -273,22 +288,26 @@ public class CampusHubServiceImpl implements CampusHubService {
         .orElseThrow(() -> new ResourceNotFoundException("Docente no encontrado"));
   }
 
+  // Busca un estudiante o lanza 404
   private EstudianteEntity estudiante(Long id) {
     return estudiantes
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Estudiante no encontrado"));
   }
 
+  // Busca una actividad o lanza 404
   private ActividadEntity actividad(Long id) {
     return actividades
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Actividad no encontrada"));
   }
 
+  // Comprueba que el cuerpo de la petición no sea null
   private static void requireBody(Object body) {
     if (body == null) throw new InvalidInputException("El cuerpo de la petición es obligatorio");
   }
 
+  // Comprueba que el texto no esté vacío ni pase del máximo, y le quita espacios
   private static String text(String value, String field, int max) {
     if (value == null || value.isBlank()) throw new InvalidInputException(field + " es obligatorio");
     String v = value.strip();
@@ -296,12 +315,14 @@ public class CampusHubServiceImpl implements CampusHubService {
     return v;
   }
 
+  // Valida que el correo tenga formato básico x@y
   private static String email(String value) {
     String v = text(value, "email", 150);
     if (!v.matches("^[^@\\s]+@[^@\\s]+$")) throw new InvalidInputException("email no válido");
     return v;
   }
 
+  // Convierte un texto AAAA-MM-DD a fecha
   private static LocalDate date(String value, String field) {
     if (value == null || value.isBlank()) throw new InvalidInputException(field + " es obligatorio");
     try {
@@ -311,6 +332,7 @@ public class CampusHubServiceImpl implements CampusHubService {
     }
   }
 
+  // Convierte un texto al enum TipoActividad
   private static TipoActividad tipo(String value) {
     if (value == null || value.isBlank()) throw new InvalidInputException("tipo es obligatorio");
     try {

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntityMapper {
 
+    // Departamento -> DTO
     public DepartamentoResponse toResponse(DepartamentoEntity e) {
         return new DepartamentoResponse(e.getIdDepartamento(), e.getNombreDepartamento());
     }
 
+    // Docente -> DTO
     public DocenteResponse toResponse(DocenteEntity e) {
         return new DocenteResponse(
                 e.getIdDocente(),
@@ -21,11 +23,13 @@ public class EntityMapper {
                 e.getDepartamento().getIdDepartamento());
     }
 
+    // Grupo -> DTO
     public GrupoResponse toResponse(GrupoEntity e) {
         return new GrupoResponse(
                 e.getIdGrupo(), e.getNombreGrupo(), e.getNivelGrupo(), e.getTutor().getIdDocente());
     }
 
+    // Estudiante -> DTO
     public EstudianteResponse toResponse(EstudianteEntity e) {
         return new EstudianteResponse(
                 e.getIdEstudiante(),
@@ -36,6 +40,7 @@ public class EntityMapper {
                 e.getGrupoEstudiante().getIdGrupo());
     }
 
+    // Actividad -> DTO
     public ActividadResponse toResponse(ActividadEntity e) {
         return new ActividadResponse(
                 e.getIdActividad(),
@@ -47,6 +52,7 @@ public class EntityMapper {
                 e.getDocenteResponsable().getIdDocente());
     }
 
+    // Inscripción -> DTO
     public InscripcionResponse toResponse(InscripcionEntity e) {
         return new InscripcionResponse(
                 e.getIdInscripcion(),
@@ -55,6 +61,7 @@ public class EntityMapper {
                 e.getFechaInscripcion().toString());
     }
 
+    // Contacto -> DTO (la fecha puede ser null)
     public ContactoResponse toResponse(ContactoEntity e) {
         return new ContactoResponse(
                 e.getIdEstudiante(),

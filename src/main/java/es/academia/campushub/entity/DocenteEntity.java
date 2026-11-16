@@ -15,19 +15,19 @@ public class DocenteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idDocente;
+    private Long idDocente; // clave primaria autogenerada
 
     @Column(nullable = false, length = 100)
-    private String nombreDocente;
+    private String nombreDocente; // nombre
 
     @Column(nullable = false, length = 150)
-    private String apellidoDocente;
+    private String apellidoDocente; // apellidos
 
     @Column(nullable = false, length = 150)
-    private String correoDocente;
+    private String correoDocente; // correo (único)
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "departamento_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_docente_departamento"))
-    private DepartamentoEntity departamento;
+    private DepartamentoEntity departamento; // departamento al que pertenece
 }

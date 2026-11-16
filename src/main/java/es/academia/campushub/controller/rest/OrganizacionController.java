@@ -17,17 +17,20 @@ public class OrganizacionController {
     this.service = service;
   }
 
+  // Crear grupo
   @PostMapping("/api/grupos")
   public ResponseEntity<GrupoResponse> grupo(@RequestBody CreateGrupoRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearGrupo(r));
   }
 
+  // Crear departamento
   @PostMapping("/api/departamentos")
   public ResponseEntity<DepartamentoResponse> departamento(
       @RequestBody CreateDepartamentoRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearDepartamento(r));
   }
 
+  // Crear docente
   @PostMapping("/api/docentes")
   public ResponseEntity<DocenteResponse> docente(@RequestBody CreateDocenteRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearDocente(r));

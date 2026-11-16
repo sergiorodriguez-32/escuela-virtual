@@ -18,17 +18,20 @@ public class EtiquetaController {
     this.service = service;
   }
 
+  // Crear etiqueta
   @PostMapping("/api/etiquetas")
   public ResponseEntity<EtiquetaResponse> crear(@RequestBody CreateEtiquetaRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearEtiqueta(r));
   }
 
+  // Asociar etiqueta a actividad (204 sin cuerpo)
   @PutMapping("/api/actividades/{id}/etiquetas/{etiquetaId}")
   public ResponseEntity<Void> asociar(@PathVariable Long id, @PathVariable Long etiquetaId) {
     service.asociarEtiqueta(id, etiquetaId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
+  // Actividades de una etiqueta
   @GetMapping("/api/etiquetas/{id}/actividades")
   public List<ActividadResponse> actividades(@PathVariable Long id) {
     return service.actividadesPorEtiqueta(id);

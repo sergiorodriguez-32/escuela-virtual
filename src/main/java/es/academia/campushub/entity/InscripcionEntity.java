@@ -19,18 +19,18 @@ public class InscripcionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInscripcion;
+    private Long idInscripcion; // clave primaria autogenerada
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "actividad_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_inscripcion_actividad"))
-    private ActividadEntity actividad;
+    private ActividadEntity actividad; // actividad en la que se inscribe
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "estudiante_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_inscripcion_estudiante"))
-    private EstudianteEntity estudiante;
+    private EstudianteEntity estudiante; // estudiante inscrito
 
     @Column(nullable = false)
-    private LocalDateTime fechaInscripcion;
+    private LocalDateTime fechaInscripcion; // momento de la inscripción
 }

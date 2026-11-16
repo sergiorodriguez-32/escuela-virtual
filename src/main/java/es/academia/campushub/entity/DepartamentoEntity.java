@@ -14,8 +14,8 @@ public class DepartamentoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idDepartamento;
+    private Long idDepartamento; // clave primaria autogenerada
 
     @Column(nullable = false, length = 100)
-    private String nombreDepartamento;
+    private String nombreDepartamento; // nombre (único)
 }

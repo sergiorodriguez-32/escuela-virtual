@@ -15,27 +15,32 @@ public class EstudianteController {
     this.uc = uc;
   }
 
+  // Crear estudiante
   @PostMapping("/api/estudiantes")
   public ResponseEntity<EstudianteResponse> crear(@RequestBody CreateEstudianteRequest r) {
     return ResponseEntity.status(201).body(uc.crearEstudiante(r));
   }
 
+  // Obtener estudiante por id
   @GetMapping("/api/estudiantes/{id}")
   public EstudianteResponse obtener(@PathVariable Long id) {
     return uc.obtenerEstudiante(id);
   }
 
+  // Historial de actividades del estudiante
   @GetMapping("/api/estudiantes/{id}/actividades")
   public List<ActividadHistorialResponse> historial(@PathVariable Long id) {
     return uc.historial(id);
   }
 
+  // Crear o actualizar contacto
   @PutMapping("/api/estudiantes/{id}/contacto")
   public ContactoResponse contactoGuardar(
       @PathVariable Long id, @RequestBody UpsertContactoRequest r) {
     return uc.guardarContacto(id, r);
   }
 
+  // Obtener contacto
   @GetMapping("/api/estudiantes/{id}/contacto")
   public ContactoResponse contacto(@PathVariable Long id) {
     return uc.contacto(id);

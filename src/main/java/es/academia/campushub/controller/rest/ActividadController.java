@@ -16,33 +16,39 @@ public class ActividadController {
     this.service = service;
   }
 
+  // Crear actividad
   @PostMapping("/api/actividades")
   public ResponseEntity<ActividadResponse> crear(@RequestBody CreateActividadRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearActividad(r));
   }
 
+  // Obtener actividad por id
   @GetMapping("/api/actividades/{id}")
   public ActividadResponse obtener(@PathVariable Long id) {
     return service.obtenerActividad(id);
   }
 
+  // Inscribir un estudiante
   @PostMapping("/api/actividades/{id}/inscripciones")
   public ResponseEntity<InscripcionResponse> inscribir(
       @PathVariable Long id, @RequestBody CreateInscripcionRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.inscribir(id, r));
   }
 
+  // Listar inscritos
   @GetMapping("/api/actividades/{id}/inscripciones")
   public List<EstudianteResponse> participantes(@PathVariable Long id) {
     return service.participantes(id);
   }
 
+  // Registrar seguimiento
   @PostMapping("/api/actividades/{id}/seguimientos")
   public ResponseEntity<SeguimientoResponse> seguimiento(
       @PathVariable Long id, @RequestBody CreateSeguimientoRequest r) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.registrarSeguimiento(id, r));
   }
 
+  // Detalle completo de la actividad
   @GetMapping("/api/actividades/{id}/detalle")
   public ActividadDetalleResponse detalle(@PathVariable Long id) {
     return service.detalle(id);
